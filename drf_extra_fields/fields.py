@@ -46,6 +46,10 @@ class Base64ImageField(ImageField):
             return None
 
         if isinstance(base64_data, six.string_types):
+            # Strip base64 header.
+            if ';base64,' in data:
+                header, base64_data = base64_data.split(';base64,')
+
             # Try to decode the file. Return validation error if it fails.
             try:
                 decoded_file = base64.b64decode(base64_data)
